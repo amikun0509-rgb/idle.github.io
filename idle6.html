@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>(G)I-DLE 掛け声まとめ</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink-main: #ff7eb9;
+    --pink-light: #ffb3d9;
+    --pink-bg: #fff6fa;
+    --text-dark: #2a2a2a;
+    --grad: linear-gradient(135deg, #ff80ab 0%, #ffb6c1 50%, #ffcce7 100%);
+  }
+
+  body {
+    font-family: "Noto Sans JP", "Poppins", sans-serif;
+    background: var(--pink-bg);
+    margin: 0;
+    padding: 20px;
+    color: var(--text-dark);
+    text-align: center;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ふわふわ背景アニメ */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 20% 30%, rgba(255,182,193,0.25), transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(255,182,255,0.3), transparent 60%);
+    animation: float 10s ease-in-out infinite alternate;
+    z-index: -1;
+  }
+  @keyframes float {
+    from { transform: translateY(0); }
+    to { transform: translateY(-20px); }
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 32px;
+    background: var(--grad);
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 6px rgba(255,128,171,0.4);
+    margin-bottom: 8px;
+  }
+
+  p.lead {
+    margin-top: 0;
+    margin-bottom: 18px;
+    color: #555;
+  }
+
+  .note {
+    text-align: left;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: #333;
+    background: white;
+    border-radius: 0 0 14px 14px;
+    border-top: 2px solid var(--pink-main);
+    box-shadow: 0 2px 10px rgba(255,182,193,0.3);
+  }
+
+  /* === 曲リスト === */
+  .song-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 18px;
+    margin-top: 28px;
+  }
+
+  .song {
+    cursor: pointer;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 14px rgba(255,128,171,0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+  }
+
+  .song:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 18px rgba(255,128,171,0.3);
+  }
+
+  .song img {
+    width: 100%;
+    display: block;
+  }
+
+  .song span {
+    display: block;
+    padding: 10px;
+    font-size: 15px;
+    color: var(--pink-main);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .song[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+  }
+
+  /* === 特大カード === */
+  .song.featured {
+    grid-column: 1 / -1;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(255,128,171,0.3);
+    background: var(--grad);
+  }
+
+  .song.featured img {
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-bottom: 3px solid rgba(255,255,255,0.5);
+  }
+
+  .song.featured span {
+    font-size: 18px;
+    color: white;
+    text-shadow: 0 1px 6px rgba(255,128,171,0.6);
+    padding: 12px;
+    font-weight: 700;
+  }
+
+  /* === モーダル === */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(255,192,203,0.25);
+    backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 10px;
+    max-width: 960px;
+    width: 100%;
+    box-shadow: 0 8px 24px rgba(255,182,193,0.4);
+    animation: fadeIn 0.25s ease;
+  }
+
+  @keyframes fadeIn {
+    from {opacity:0; transform:scale(.96);}
+    to {opacity:1; transform:scale(1);}
+  }
+
+  .modal-content iframe {
+    width: 100%;
+    height: 480px;
+    border: 0;
+    border-radius: 10px;
+    display: block;
+  }
+
+  .close-btn {
+    margin-top: 10px;
+    background: var(--grad);
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(255,128,171,0.3);
+    transition: transform 0.2s ease;
+  }
+
+  .close-btn:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width:640px) {
+    h1 { font-size: 24px; }
+    .modal-content iframe { height: 260px; }
+  }
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>(G)I-DLE 掛け声まとめ</h1>
+    
+
+    <!-- 全体練習用 -->
+    <section aria-label="全体を通して練習">
+      <div class="song featured" data-video="RGnTK158sXs">
+        <img src="https://img.youtube.com/vi/RGnTK158sXs/hqdefault.jpg" alt="全体練習用動画のサムネイル">
+        <span>全体練習用動画</span>
+      </div>
+      <div class="note">
+        掛け声の部分が日本語で表示されており、全体を通して練習したい方におすすめです。<br>
+        まずはこの動画で全体の流れをチェックしましょう
+      </div>
+    </section>
+
+    <!-- 曲リスト -->
+    <div class="song-list" aria-label="曲リスト">
+      <div class="song" data-video="DgF3tjsujdY"><img src="https://img.youtube.com/vi/DgF3tjsujdY/hqdefault.jpg"><span>LATATA</span></div>
+      <div class="song" data-video="Zh1p7dNtS8Y"><img src="https://img.youtube.com/vi/Zh1p7dNtS8Y/hqdefault.jpg"><span>HANN</span></div>
+      <div class="song" data-video="mtS__Me5KhM"><img src="https://img.youtube.com/vi/mtS__Me5KhM/hqdefault.jpg"><span>Senorita</span></div>
+      <div class="song" data-video="Xc67HobtL68"><img src="https://img.youtube.com/vi/Xc67HobtL68/hqdefault.jpg"><span>Uh-Oh</span></div>
+      <div class="song" data-video="ArRWzLtS1iM"><img src="https://img.youtube.com/vi/ArRWzLtS1iM/hqdefault.jpg"><span>LION</span></div>
+      <div class="song" data-video="iG6KRfUE_hs"><img src="https://img.youtube.com/vi/iG6KRfUE_hs/hqdefault.jpg"><span>Oh my god</span></div>
+      <div class="song" data-video="ourG5p8evmk"><img src="https://img.youtube.com/vi/ourG5p8evmk/hqdefault.jpg"><span>DUMDiDUMDi</span></div>
+      <div class="song" data-video="cD47izQfxTs"><img src="https://img.youtube.com/vi/cD47izQfxTs/hqdefault.jpg"><span>HWAA</span></div>
+      <div class="song" data-video="ax45oDJiQh0"><img src="https://img.youtube.com/vi/ax45oDJiQh0/hqdefault.jpg"><span>TOMBOY</span></div>
+      <div class="song" data-video="WjCYHBcNS08"><img src="https://img.youtube.com/vi/WjCYHBcNS08/hqdefault.jpg"><span>Nxde</span></div>
+      <div class="song" data-video="NV-pwtijKWg"><img src="https://img.youtube.com/vi/NV-pwtijKWg/hqdefault.jpg"><span>Queencard</span></div>
+      <div class="song" data-video="YP1NyGaa4uU"><img src="https://img.youtube.com/vi/YP1NyGaa4uU/hqdefault.jpg"><span>SuperLady</span></div>
+      <div class="song" data-video="pQpXPxBRzqE"><img src="https://img.youtube.com/vi/pQpXPxBRzqE/hqdefault.jpg"><span>Klaxon</span></div>
+      <div class="song" data-video="x2Mu2Zk_CVk"><img src="https://img.youtube.com/vi/x2Mu2Zk_CVk/hqdefault.jpg"><span>GoodThing</span></div>
+      <div class="song" disabled><img src="images/no-thumbnail.png"><span>GirlFriend（作成中）</span></div>
+    </div>
+
+    <!-- モーダル -->
+    <div id="videoModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-content" role="document">
+        <iframe id="videoFrame" src="" title="動画プレイヤー（モーダル）"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+        <div style="text-align:right;">
+          <button class="close-btn" onclick="closeModal()">閉じる</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const modal = document.getElementById('videoModal');
+const frame = document.getElementById('videoFrame');
+const songs = document.querySelectorAll('.song');
+
+songs.forEach(song => {
+  song.addEventListener('click', () => {
+    const vid = song.dataset.video;
+    if (vid) {
+      frame.src = `https://www.youtube.com/embed/${vid}?autoplay=1`;
+      modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden', 'false');
+    }
+  });
+});
+
+function closeModal() {
+  modal.style.display = 'none';
+  frame.src = '';
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+});
+</script>
+</body>
+</html>
